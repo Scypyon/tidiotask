@@ -1,12 +1,36 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
+import { Provider } from "react-redux";
+import { reducer } from "./store/index.js"
+import "./index.css";
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
-ReactDOM.render(<App />, document.getElementById('root'));
+import { createStore, applyMiddleware } from "redux";
+import createSagaMiddleware from "redux-saga";
+import { watchAgeUp } from "./sagas/saga.js";
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+import Todo from "./components/TodoList";
+
+function NoMatch() {
+  return <Redirect to="/login" />;
+}
+
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducer, applyMiddleware(sagaMiddleware));
+
+sagaMiddleware.run(watchAgeUp);
+
+ReactDOM.render(
+  <Provider store={store}>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/login" exec component={App} />
+        <Route path="/todo" exec component={Todo} />
+        <Route component={NoMatch} />
+      </Switch>
+    </BrowserRouter>
+    ,
+  </Provider>,
+  document.getElementById("root")
+);
