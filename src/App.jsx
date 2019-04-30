@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Redirect } from "react-router-dom";
 import { connect } from "react-redux";
@@ -8,6 +8,11 @@ function App({ availableUsers }) {
   const [access, setAccess] = useState(
     JSON.parse(localStorage.getItem("UserAccess"))
   );
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("Todos")).length <= 1)
+      localStorage.setItem("Todos", JSON.stringify(["Dodaj Swoje Taski !"]));
+  }, []);
 
   const checkUser = () => {
     if (
@@ -29,14 +34,12 @@ function App({ availableUsers }) {
       <input
         placeholder="Login"
         type="text"
-        onChange={e =>
-          setUser({ login: e.target.value, password: user.password })
-        }
+        onChange={e => setUser({ ...user, login: e.target.value })}
       />
       <input
         placeholder="Password"
         type="password"
-        onChange={e => setUser({ login: user.login, password: e.target.value })}
+        onChange={e => setUser({ ...user, password: e.target.value })}
       />
       <button onClick={checkUser}>Sing In</button>
     </div>

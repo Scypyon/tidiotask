@@ -5,7 +5,7 @@ import "./index.css";
 import TodoTask from "../TodoTask";
 
 export default function Todo() {
-  const reducer = (todos, action) => {
+  const reducer = (todos = [], action) => {
     switch (action.type) {
       case "addTodo":
         return [...todos, action.todos];
@@ -23,12 +23,6 @@ export default function Todo() {
     reducer,
     JSON.parse(localStorage.getItem("Todos"))
   );
-
-  useEffect(() => {
-    if (todos === null) {
-      localStorage.setItem("Todos", JSON.stringify(["Dodaj Swoje Taski !"]));
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem("Todos", JSON.stringify(todos));
