@@ -10,7 +10,7 @@ function App({ availableUsers }) {
   );
 
   useEffect(() => {
-    if (JSON.parse(localStorage.getItem("Todos")).length <= 1)
+    if (JSON.parse(localStorage.getItem("Todos")) === null)
       localStorage.setItem("Todos", JSON.stringify(["Dodaj Swoje Taski !"]));
   }, []);
 

@@ -28,10 +28,6 @@ export default function Todo() {
     localStorage.setItem("Todos", JSON.stringify(todos));
   }, [todos]);
 
-  const toggleChange = e => {
-    setTodo(e.target.value);
-  };
-
   const addTask = value => {
     if (todos.every(task => task !== value))
       dispatch({ todos: todo, type: "addTodo" });
@@ -75,7 +71,7 @@ export default function Todo() {
             editTask={editTask}
           />
         ))}
-        <input type="text" onChange={e => toggleChange(e)} />
+        <input type="text" onChange={e => setTodo(e.target.value)} />
         <button onClick={() => addTask(todo)}>+</button>
       </div>
     </>
